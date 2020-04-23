@@ -91,7 +91,9 @@ const Button = ({ type, children }) => {
       </button>
     );
   } else {
-    return <button style={{ backgroundColor: 'purple' }}>{children}</button>;
+    return <button style={{ backgroundColor: 'purple' }}>
+    {children}
+    </button>;
   }
 };
 ```
