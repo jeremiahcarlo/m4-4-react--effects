@@ -156,9 +156,10 @@ Update the following snippets to make use of `useEffect`
 ```js
 const App = () => {
   const [count, setCount] = React.useState(0);
-
-  document.title = `You have clicked ${count} times`;
-
+  React.useEffect() => {
+    document.title = `You have clicked ${count} times`;
+   }, [count]);
+  
   return (
     <button onClick={() => setCount(count + 1)}>
       Increment
@@ -173,10 +174,15 @@ const App = () => {
 const App = ({ color }) => {
   const [value, setValue] = React.useState(false);
 
-  window.localStorage.setItem('value', value);
-  window.localStorage.setItem('color', color);
+React.useEffect(() => {
 
-  return (
+  window.localStorage.setItem('value', value); 
+  //window.localStorage saves info onto the page
+}, [value]);
+  window.localStorage.setItem('color', color);
+}, [color]);
+
+return (
     <div>
       Value: {value}
       <button onClick={() => setValue(!value)}>
@@ -191,11 +197,13 @@ const App = ({ color }) => {
 
 ```js
 const Modal = ({ handleClose }) => {
+  React.useEffect(() => {
   window.addEventListener('keydown', (ev) => {
     if (ev.code === 'Escape') {
       handleClose();
     }
   });
+  }; []);
 
   return (
     <div>
@@ -314,12 +322,17 @@ Make sure to do the appropriate cleanup work
 ```js
 // seTimeout is similar to setInterval...
 const App = () => {
+  
   React.useEffect(() => {
-    window.setTimeout(() => {
-      console.log('1 second after update!')
-    });
-  }, [])
+  const timerTofu = window.setTimeout(() => {
+    console.log('1 second after update!')
+   }, 1000);
 
+  return () => {
+    clearTimeout(timerTofu); 
+    }
+  }, [])
+   
   return null;
 }
 ```
@@ -391,7 +404,10 @@ const App = ({ path }) => {
     }
   }, []);
 
-  return (
+  return mousePosition,;
+}
+
+const App = ({})
     <div>
       The mouse is at {mousePosition.x}, {mousePosition.y}.
     </div>
@@ -417,7 +433,7 @@ Extract a custom hook
 ---
 
 ```js
-const App = ({ path }) => {
+const useData = (path) => {
   const [data, setData] = React.useState(null);
 
   React.useEffect(() => {
@@ -425,8 +441,12 @@ const App = ({ path }) => {
       .then(res => res.json())
       .then(json => {
         setData(json);
-      })
-  }, [path])
+        return data;
+      });
+  }, [path]);
+}
+
+const App = ({ path }) => {
 
   return (
     <span>
